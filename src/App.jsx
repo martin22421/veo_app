@@ -436,14 +436,21 @@ Prompt: ${generatedPrompt.trim()}`;
 
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
       // URL API yang sudah diperbaiki
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict`;
 
       const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey
+        },
         body: JSON.stringify(payload)
       });
       const result = await response.json();
+
+      if (response.status !== 200) {
+        throw new Error(`API responded with status: ${response.status}. Error detail: ${JSON.stringify(result)}`);
+      }
 
       if (result.predictions && result.predictions.length > 0) {
         const imageUrls = result.predictions.map(pred => `data:image/png;base64,${pred.bytesBase64Encoded}`);
