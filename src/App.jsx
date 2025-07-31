@@ -418,7 +418,7 @@ Prompt: ${generatedPrompt.trim()}`;
     try {
       const fullImageGenPrompt = `${imageGenPrompt.trim()}, aspect ratio ${aspectRatio}`;
       
-      // Mengkonstruksi payload secara dinamis, hanya menyertakan negativePrompt jika ada isinya
+      // Mengkonstruksi payload secara dinamis
       const instances = { 
         prompt: fullImageGenPrompt
       };
@@ -435,6 +435,7 @@ Prompt: ${generatedPrompt.trim()}`;
       };
 
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
+      // URL API yang sudah diperbaiki
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
 
       const response = await fetch(apiUrl, {
