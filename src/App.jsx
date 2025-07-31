@@ -418,11 +418,16 @@ Prompt: ${generatedPrompt.trim()}`;
     try {
       const fullImageGenPrompt = `${imageGenPrompt.trim()}, aspect ratio ${aspectRatio}`;
       
+      // Mengkonstruksi payload secara dinamis, hanya menyertakan negativePrompt jika ada isinya
+      const instances = { 
+        prompt: fullImageGenPrompt
+      };
+      if (negativePrompt.trim()) {
+        instances.negativePrompt = negativePrompt.trim();
+      }
+
       const payload = {
-        instances: { 
-          prompt: fullImageGenPrompt,
-          ...(negativePrompt.trim() && { negativePrompt: negativePrompt.trim() })
-        }, 
+        instances: instances, 
         parameters: {
           sampleCount: 4, 
           aspectRatio: aspectRatio
